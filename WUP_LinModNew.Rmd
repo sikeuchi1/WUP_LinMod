@@ -49,43 +49,97 @@ We have numerical response (sim score) and numerical explanatory variables (arm 
 ## Model 1 SIM~ARMS
 
 ### scatterplot
-
+```{r}
+plot(SIMS~ARM, data=data)
+```
+Based on the scatterplot, there is a positive association between SIMS and ARM. If this was a perfect linear relationship, all points would be on a straight line going up.
 ### Numerical results
-
-
+```{r}
+cor(SIMS~ARM, data=data)
+```
+ 
+The correlation between SIM and arm strength is 0.680073.
 ### Inferential  (Build model.1)
 
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+summary.lm(model.1)
+```
+The p-value for the coefficient of arm is 0.00000000000000002.
 #### Predict at target point
-
-
+```{r}
+SIMSpredict = predict.lm(model.1, newdata = data.frame(ARM=88, GRIP=94),interval="confidence")
+print(SIMSpredict)
+```
+ 
+The prediction for AMR=88 and GRIP=94 is 0.71.
 #### scatterplot with model fit
-  
+```{r}
+plot(SIMS~ARM,data=data)
+abline(model.1, col="red")
+``` 
 
+ This is a scatter plot with the line of best fit. The ARM strength at 88 has a 95 percent confidence interval between 0.49 and 0.92.
 ## Model 2 SIM~GRIP
 
 ### Now add in scatterplot
-
-
+```{r}
+plot(SIMS~GRIP, data=data)
+```
+ 
+Based on the scatterplot, there is a positive association between SIMS and GRIP. If this was a perfect linear relationship, all points would be on a straight line going up.
 ### Numerical results 
+```{r}
+cor(SIMS~GRIP, data=data)
+```
+ 
+The correlation between SIM and arm strength is 0.69398458.
+### Inferential  (Build model.1)
 
-
-### Inferential  (Build model.2)
-  
-
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+summary.lm(model.2)
+```
+ 
+The p-value for the coefficient of arm is 0.00000000000000002.
 #### predict model.2 at target point
-
+ 
+```{r}
+SIMSpredict = predict.lm(model.2, newdata = data.frame(ARM=88, GRIP=94),interval="confidence")
+print(SIMSpredict)
+```
+ 
+The prediction for ARM=88 and GRIP=94 is -0.535143.
 #### now add the model fit to our plot for model.2
   
-
+```{r}
+plot(SIMS~GRIP,data=data)
+abline(model.2, col="red")
+``` 
+ 
+ This is a scatter plot with the line of best fit. The GRIP strength at 94 has a 95 percent confidence interval between -0.7924943 -0.2798144.
 
 ## Model 3 SIM~ARM+GRIP
 
 ### Numerical results (cor)
-
-`
+ 
+```{r}
+m = data.frame(data['GRIP'], data['ARM'], data['SIMS'])
+cor(m)
+```
+ 
+The table shows that SIMS correlates with GRIP in a positive manner(0.64) and SIMS correlates with ARM also in a positive manner (0.69). This shows that these variables are useful in predicting SIMS.
   
+```{r}
+plot(data$GRIP, data$ARM)
+```
 ### Inferential  (Build 2-dimentional model.3)
-
+```{r}
+model.3 = lm(SIMS~GRIP+ARM,data=data)
+print(model.3)
+newPoint = data.frame(GRIP=94, ARM=88)
+predict.lm(model.3, newPoint, interval='prediction')
+```
 #### predict model.3 at target point
   
 
