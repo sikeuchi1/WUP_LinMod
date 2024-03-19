@@ -132,6 +132,7 @@ The table shows that SIMS correlates with GRIP in a positive manner(0.64) and SI
   
 ```{r}
 plot(data$GRIP, data$ARM)
+
 ```
 ### Inferential  (Build 2-dimentional model.3)
 ```{r}
@@ -140,13 +141,35 @@ print(model.3)
 newPoint = data.frame(GRIP=94, ARM=88)
 predict.lm(model.3, newPoint, interval='prediction')
 ```
+ 
+The 95% confidence interval in SIMS is between -2.13 and 2.43.  Since this interval contains 0, we do not have a very good prediction for SIMS.
+
 #### predict model.3 at target point
   
-
+```{r}
+SIMSpredict = predict.lm(model.3, newdata = data.frame(ARM=88, GRIP=94))
+print(SIMSpredict)
+```
 ## Comparing nested models ANOVA Test
 
 ### Model.1 vs Model.3
+
+```{r}
+anova(model.1, model.3)
+
+```
+ 
+The p-value is 0.000004994, this is less than 0.05, so we can conclude that model.3 is better than model.1.
+
+
+
 ### Model.2 vs Model.3
 
 ## Informally compare Model.1 with model.2
+```{r}
+anova(model.2, model.3)
 
+```
+
+
+The p-value is 0.000000004995, this is less than 0.05, so we can conclude that model.3 is better than model.2.
